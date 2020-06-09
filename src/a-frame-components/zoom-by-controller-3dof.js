@@ -1,3 +1,6 @@
+/* eslint-disable */ 
+import AFRAME from 'aframe/dist/aframe-v1.0.4';
+
 AFRAME.registerComponent('zoom-by-controller-3dof', {
     schema: {
         target: { type: 'selector' },
@@ -16,12 +19,12 @@ AFRAME.registerComponent('zoom-by-controller-3dof', {
         el.addEventListener('buttonup', function (e) {
 
             setTimeout(function () {
-                self.buttonPressed = false;
+                self.buttonPressed = false;                
             }, 100);
         });
 
 
-        el.addEventListener('trackpadup', function (e) {
+        el.addEventListener('touchpadup', function (e) {
             //default
             setTimeout(function () {
                 self.scale = undefined;
@@ -31,7 +34,7 @@ AFRAME.registerComponent('zoom-by-controller-3dof', {
         });
 
 
-        el.addEventListener('trackpadmoved', function (e) {
+        el.addEventListener('axismove', function (e) {
 
             //discard touchpad tracking when touchpad and trigger are pressed
             if (self.buttonPressed) {
@@ -39,17 +42,17 @@ AFRAME.registerComponent('zoom-by-controller-3dof', {
             }
 
             //discard default when touching ended
-            if (e.detail.y === 0 && e.detail.x === 0) {
+            if (e.detail.axis[0] === 0 && e.detail.axis[1] === 0) {
                 self.prev = undefined;
                 self.scale = undefined;
                 return;
             }
 
             if (!self.prev) {
-                self.prev = e.detail.y;
+                self.prev = e.detail.axis[1];
             }
 
-            var delta = self.prev - e.detail.y;
+            var delta = self.prev - e.detail.axis[1];
             var scale = parentRig.scale.clone();
 
             if (delta < 0) {
@@ -63,7 +66,7 @@ AFRAME.registerComponent('zoom-by-controller-3dof', {
             }
 
             self.scale = scale.clone();
-            self.prev = e.detail.y;
+            self.prev = e.detail.axis[1];
         });
     },
 

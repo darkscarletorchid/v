@@ -1,4 +1,5 @@
-
+/* eslint-disable */ 
+import AFRAME from 'aframe/dist/aframe-v1.0.4';
 
 AFRAME.registerComponent('rotate-by-controller-3dof', {
 
@@ -10,7 +11,7 @@ AFRAME.registerComponent('rotate-by-controller-3dof', {
     init: function () {
         var self = this;
         var el = this.el;
-
+        
         //TODO count based on default front camera
         var defaultRotation = new THREE.Vector3(-90, 0, 0);
 
@@ -27,7 +28,7 @@ AFRAME.registerComponent('rotate-by-controller-3dof', {
             self.isCircleMode = null;
         });
 
-        el.addEventListener('trackpadup', function (e) {
+        el.addEventListener('touchpadup', function (e) {
             //default rotation
             setTimeout(function () {
                 parentRig.rotation.set(defaultRotation.x, defaultRotation.y, defaultRotation.z);
