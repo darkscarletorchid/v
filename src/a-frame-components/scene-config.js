@@ -3,6 +3,8 @@ import './rotate-by-controller-3dof.js';
 import './zoom-by-controller-3dof.js';
 import './rotate-by-controller-6dof.js';
 import './zoom-by-controller-6dof.js';
+import 'super-hands';
+
 AFRAME.registerComponent('scene-config', {
 
     init: function () {
@@ -25,10 +27,17 @@ AFRAME.registerComponent('scene-config', {
             this.parentRig.setAttribute("position", this.OBJECTSPOS_3DOF)
             this.controllerRight.setAttribute("rotate-by-controller-3dof", {target:"#parentRig", radius: 100});
             this.controllerRight.setAttribute("zoom-by-controller-3dof", {target:"#parentRig", nearLimit: 0.5});
+            this.controllerRight.setAttribute("laser-controls", {model:true, hand: "right"});
+            this.controllerRight.setAttribute("raycaster", {showLine: true, far:0.1, objects: ".raycastable"});
+            this.controllerLeft.setAttribute("laser-controls", {model:true, hand: "left"});
+            this.controllerLeft.setAttribute("raycaster", {far: 0});
         } else if (this.is6DoF) {
             this.parentRig.setAttribute("position", this.OBJECTSPOS_6DOF)
-             this.controllerRight.setAttribute("rotate-by-controller-6dof", {target:"#parentRig"});
-             this.controllerRight.setAttribute("zoom-by-controller-3dof", {target:"#parentRig"});
+            //  this.controllerRight.setAttribute("rotate-by-controller-6dof", {target:"#parentRig"});
+            //  this.controllerRight.setAttribute("zoom-by-controller-6dof", {target:"#parentRig"});
+             this.controllerRight.setAttribute("hand-controls", {hand: "right"});
+             this.controllerLeft.setAttribute("hand-controls", {hand: "left"});
+
          }
         //else {
         //     throw new Error("Not supported headset type");
