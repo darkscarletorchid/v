@@ -33,7 +33,7 @@ AFRAME.registerComponent('scene-config', {
             this.controllerLeft.setAttribute("raycaster", {far: 0});
         } else if (this.is6DoF) {
             this.parentRig.setAttribute("position", this.OBJECTSPOS_6DOF)
-            //  this.controllerRight.setAttribute("rotate-by-controller-6dof", {target:"#parentRig"});
+             this.controllerRight.setAttribute("rotate-by-controller-6dof", {target:"#parentRig"});
             //  this.controllerRight.setAttribute("zoom-by-controller-6dof", {target:"#parentRig"});
              this.controllerRight.setAttribute("hand-controls", {hand: "right"});
              this.controllerLeft.setAttribute("hand-controls", {hand: "left"});

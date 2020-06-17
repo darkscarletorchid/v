@@ -4,7 +4,9 @@ import sky from './surgeonRoom.jpg';
 import './App.css';
 import 'aframe/dist/aframe-v1.0.4';
 import './a-frame-components/scene-config.js';
-import 'aframe-extras'
+import 'aframe-extras';
+import 'aframe-physics-system/dist/aframe-physics-system';
+
 function App() {
   return (
     <div className="App">
@@ -21,12 +23,13 @@ function App() {
         <a-entity id="cameraRig" position="0 0 0">
             <a-camera look-controls="enabled:false" wasd-controls="enabled:false" id="camera">
             </a-camera>
-            <a-entity id="controllerRight" sphere-collider="objects: a-box" grab></a-entity>
-            <a-entity id="controllerLeft" sphere-collider grab></a-entity>
+            <a-entity id="controllerRight" sphere-collider="objects: .models"></a-entity>
+            <a-entity id="controllerLeft" sphere-collider></a-entity>
         </a-entity>
 
         <a-entity id="parentRig" rotation="-90 0 0" scale="0.001 0.001 0.001">
-          <a-box position="0 0 0" rotation="0 0 0" color="#4CC3D9" scale="100 100 100" shadow sphere-collider></a-box>
+          <a-box class="models" position="0 0 0" rotation="0 0 0" color="#4CC3D9" scale="100 100 100" shadow></a-box>
+          <a-sphere class="models" position="-100 0 0" radius="1" color="#EF2D5E" scale="100 100 100" shadow></a-sphere>
         </a-entity>
 
         {/* <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9" shadow></a-box>
