@@ -6,7 +6,7 @@ import 'aframe/dist/aframe-v1.0.4';
 import './a-frame-components/scene-config.js';
 import 'aframe-extras';
 import 'aframe-physics-system/dist/aframe-physics-system';
-
+import './a-frame-components/action-handlers-6dof'
 function App() {
   return (
     <div className="App">
@@ -27,7 +27,7 @@ function App() {
             <a-entity id="controllerLeft" sphere-collider="objects: .models"></a-entity>
         </a-entity>
 
-        <a-entity id="parentRig" rotation="-90 0 0" scale="0.001 0.001 0.001">
+        <a-entity id="parentRig" action-handlers-6dof rotation="-90 0 0" scale="0.001 0.001 0.001">
           <a-box class="models" position="0 0 0" rotation="0 0 0" color="#4CC3D9" scale="100 100 100" shadow></a-box>
           <a-sphere class="models" position="-100 0 0" radius="1" color="#EF2D5E" scale="100 100 100" shadow></a-sphere>
         </a-entity>

@@ -8,8 +8,6 @@ AFRAME.registerComponent('rotate-by-controller-6dof', {
     },
 
     init: function () {
-        this.GRABBED_STATE = 'grabbed';
-
 
         this.grabbing = false;
 
@@ -17,8 +15,7 @@ AFRAME.registerComponent('rotate-by-controller-6dof', {
         this.onTriggerDown = this.onTriggerDown.bind(this);
         this.onTriggerUp = this.onTriggerUp.bind(this);
 
-        this.parentRig = this.data.target.object3D;        
-        this.parentRig.actionState = {};
+        this.parentRig = this.data.target;        
     },
 
     play: function () {
@@ -42,26 +39,16 @@ AFRAME.registerComponent('rotate-by-controller-6dof', {
     onTriggerUp: function () {
         this.grabbing = false;
 
-        if (this.parentRig.actionState.action !== this.GRABBED_STATE || this.parentRig.actionState.controllerId !== this.el.id ) { return; }
-        
-        this.parentRig.actionState.action = undefined;
-        this.parentRig.actionState.controllerId = undefined;
-
-        this.el.sceneEl.object3D.add(this.parentRig);
-        //TODO correctly transform back to world coordinates preserving rotation and position of objects
-        this.parentRig.position.set(0, 1.6, -0.7);
+        //fire grabEnd
+        this.parentRig.emit("grabEnd", {ctrl: this.el});
       },
 
     onHit: function(evt) {
         const hitEl = evt.detail.el;
-        if (!hitEl ||
-            this.parentRig.actionState.action === this.GRABBED_STATE || !this.grabbing) { return; }
-        
-        this.parentRig.actionState = {action: this.GRABBED_STATE, controllerId: this.el.id};
-        
-        //TODO correctly transform 
-        this.parentRig.position.set(0, 0, -0.1);
 
-        this.el.object3D.add(this.parentRig);
+        if (!hitEl || !this.grabbing) { return; }
+
+        //fire grabStart
+        this.parentRig.emit("grabStart", {ctrl: this.el});
     }
 });
