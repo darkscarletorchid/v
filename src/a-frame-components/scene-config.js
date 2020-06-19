@@ -3,7 +3,6 @@ import './rotate-by-controller-3dof.js';
 import './zoom-by-controller-3dof.js';
 import './rotate-by-controller-6dof.js';
 import './zoom-by-controller-6dof.js';
-import 'super-hands';
 
 AFRAME.registerComponent('scene-config', {
 
@@ -37,10 +36,11 @@ AFRAME.registerComponent('scene-config', {
              this.controllerLeft.setAttribute("rotate-by-controller-6dof", {target:"#parentRig"});
 
              //  this.controllerRight.setAttribute("zoom-by-controller-6dof", {target:"#parentRig"});
-             this.controllerRight.setAttribute("hand-controls", {hand: "right"});
-             this.controllerLeft.setAttribute("hand-controls", {hand: "left"});
-
-         }
+             this.controllerRight.setAttribute("laser-controls", {model:true, hand: "right"});
+             this.controllerLeft.setAttribute("laser-controls", {model:true, hand: "left"});
+             this.controllerLeft.setAttribute("raycaster", {far: 0});
+             this.controllerRight.setAttribute("raycaster", {far: 0});
+            }
         //else {
         //     throw new Error("Not supported headset type");
         // }
