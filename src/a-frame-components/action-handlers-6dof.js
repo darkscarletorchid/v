@@ -50,9 +50,14 @@ AFRAME.registerComponent("action-handlers-6dof", {
             this.el.isGrabbedBy = this.el.isGrabbedBy.filter(function(el) {
                return el.id !== detail.ctrl.id;
             });
+            //TODO check double controllers
+            this.prevPos = undefined;
+
         } else {
+
             return;
         }
+
     },
 
     tick: function() {
@@ -68,23 +73,21 @@ AFRAME.registerComponent("action-handlers-6dof", {
             this.el.isGrabbedBy[0].object3D.getWorldPosition(controllerPos);
             var controllerRot = new THREE.Quaternion();
             this.el.isGrabbedBy[0].object3D.getWorldQuaternion(controllerRot);
+            
 
-            if (!this.prevPos  && !this.prevRot) {
+                console.log(controllerPos.clone())
+            if (!this.prevPos /* && !this.prevRot*/) {
                 this.prevPos = controllerPos.clone();
-                this.prevRot = controllerRot.clone();
-
+                //this.prevRot = controllerRot.clone();
                 return;
             }
 
-            //TODO calculate rotation and position delta 
+            //TODO calculate rotation delta 
             var posDelta = controllerPos.clone().sub(this.prevPos.clone());
 
-            var objWorldPos = new THREE.Vector3();
-            this.el.object3D.getWorldPosition(objWorldPos);
+            var matrix = new THREE.Matrix4().makeTranslation(posDelta.x, posDelta.y, posDelta.z);
 
-            var finalPos = objWorldPos.clone().add(posDelta.clone())
-
-            this.el.object3D.position.set(finalPos.x, finalPos.y, finalPos.z);
+            this.el.object3D.applyMatrix(matrix);
 
             this.prevPos = controllerPos.clone();
             this.prevRot = controllerRot.clone();
