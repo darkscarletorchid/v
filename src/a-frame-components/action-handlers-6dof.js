@@ -52,7 +52,7 @@ AFRAME.registerComponent("action-handlers-6dof", {
             });
             //TODO check double controllers
             this.prevPos = undefined;
-
+            this.prevRot = undefined;
         } else {
 
             return;
@@ -61,6 +61,24 @@ AFRAME.registerComponent("action-handlers-6dof", {
     },
 
     tick: function() {
+
+        function fromQuaternionToAxis(q) {
+
+            var angle = Math.acos(q.w) * 2;
+            var s = Math.asin(angle / 2);
+
+            var x = q.x / s;
+            var y = q.y / s;
+            var z = q.z / s;
+
+            return {angle: angle, axis: new THREE.Vector3(x, y, z)};
+            // var halfAngle = angle / 2, s = Math.sin( halfAngle );
+
+            // this._x = axis.x * s;
+            // this._y = axis.y * s;
+            // this._z = axis.z * s;
+            // this._w = Math.cos( halfAngle );
+        }
         if ((this.el.isGrabbedBy.length === 0)) {
             //nothing to do, no object grabbed
             return;
@@ -69,23 +87,33 @@ AFRAME.registerComponent("action-handlers-6dof", {
 
             var controllerPos =  new THREE.Vector3();
             this.el.isGrabbedBy[0].object3D.getWorldPosition(controllerPos);
+            
             var controllerRot = new THREE.Quaternion();
             this.el.isGrabbedBy[0].object3D.getWorldQuaternion(controllerRot);
-            
 
-                console.log(controllerPos.clone())
-            if (!this.prevPos /* && !this.prevRot*/) {
+            if (!this.prevPos  && !this.prevRot) {
                 this.prevPos = controllerPos.clone();
-                //this.prevRot = controllerRot.clone();
+                this.prevRot = controllerRot.clone();
                 return;
             }
 
-            //TODO calculate rotation delta 
             var posDelta = controllerPos.clone().sub(this.prevPos.clone());
-
             var matrix = new THREE.Matrix4().makeTranslation(posDelta.x, posDelta.y, posDelta.z);
-
             this.el.object3D.applyMatrix(matrix);
+
+            //TODO calculate rotation delta 
+            var deltaRotation = controllerRot.clone().multiply(this.prevRot.clone().inverse());
+            var rotationMatrix = new THREE.Matrix4().makeRotationFromQuaternion(deltaRotation); 
+
+            console.log('before')
+            console.log(this.el.object3D.rotation.clone())
+            var objMatrix =  this.el.object3D.matrix.clone();
+            this.el.object3D.applyMatrix(new THREE.Matrix4().getInverse(objMatrix));
+            this.el.object3D.applyMatrix(rotationMatrix);
+            this.el.object3D.applyMatrix(objMatrix);
+            console.log('after')
+            console.log(this.el.object3D.rotation.clone())
+
 
             this.prevPos = controllerPos.clone();
             this.prevRot = controllerRot.clone();
