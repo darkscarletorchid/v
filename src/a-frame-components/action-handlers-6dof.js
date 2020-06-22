@@ -1,5 +1,5 @@
 /* eslint-disable */ 
-import AFRAME from 'aframe/dist/aframe-v1.0.4';
+import AFRAME, { Vector3 } from 'aframe/dist/aframe-v1.0.4';
 
 AFRAME.registerComponent("action-handlers-6dof", {
 
@@ -101,19 +101,12 @@ AFRAME.registerComponent("action-handlers-6dof", {
             var matrix = new THREE.Matrix4().makeTranslation(posDelta.x, posDelta.y, posDelta.z);
             this.el.object3D.applyMatrix(matrix);
 
-            //TODO calculate rotation delta 
             var deltaRotation = controllerRot.clone().multiply(this.prevRot.clone().inverse());
-            var rotationMatrix = new THREE.Matrix4().makeRotationFromQuaternion(deltaRotation); 
+            var angles = new THREE.Euler().setFromQuaternion(deltaRotation);
 
-            console.log('before')
-            console.log(this.el.object3D.rotation.clone())
-            var objMatrix =  this.el.object3D.matrix.clone();
-            this.el.object3D.applyMatrix(new THREE.Matrix4().getInverse(objMatrix));
-            this.el.object3D.applyMatrix(rotationMatrix);
-            this.el.object3D.applyMatrix(objMatrix);
-            console.log('after')
-            console.log(this.el.object3D.rotation.clone())
-
+            this.el.object3D.rotateOnWorldAxis ( new THREE.Vector3(1, 0, 0), angles.x );
+            this.el.object3D.rotateOnWorldAxis ( new THREE.Vector3(0, 1, 0), angles.y );
+            this.el.object3D.rotateOnWorldAxis ( new THREE.Vector3(0, 0, 1), angles.z );            
 
             this.prevPos = controllerPos.clone();
             this.prevRot = controllerRot.clone();
