@@ -5,8 +5,8 @@ import './App.css';
 import 'aframe/dist/aframe-v1.0.4';
 import './a-frame-components/scene-config.js';
 import 'aframe-extras';
-import 'aframe-physics-system/dist/aframe-physics-system';
-import './a-frame-components/action-handlers-6dof'
+import './a-frame-components/action-handlers-6dof';
+
 function App() {
   return (
     <div className="App">

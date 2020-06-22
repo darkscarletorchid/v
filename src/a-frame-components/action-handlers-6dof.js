@@ -62,12 +62,10 @@ AFRAME.registerComponent("action-handlers-6dof", {
 
     tick: function() {
         if ((this.el.isGrabbedBy.length === 0)) {
-            this.ACTION = "NONE";
             //nothing to do, no object grabbed
             return;
         }
         else if (this.el.isGrabbedBy.length === 1) {
-            this.ACTION = "PANROTATE";
 
             var controllerPos =  new THREE.Vector3();
             this.el.isGrabbedBy[0].object3D.getWorldPosition(controllerPos);
@@ -93,7 +91,6 @@ AFRAME.registerComponent("action-handlers-6dof", {
             this.prevRot = controllerRot.clone();
 
         } else if (this.el.isGrabbedBy.length === 2) {
-            this.ACTION = "ZOOM";
             var d = this.el.isGrabbedBy[0].object3D.position.distanceTo( this.el.isGrabbedBy[1].object3D.position );
 
             if (!this.prevDist) {

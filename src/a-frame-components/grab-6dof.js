@@ -1,7 +1,7 @@
 /* eslint-disable */ 
 import AFRAME from 'aframe/dist/aframe-v1.0.4';
 
-AFRAME.registerComponent('rotate-by-controller-6dof', {
+AFRAME.registerComponent('grab-6dof', {
 
     schema: {
         target: { type: 'selector' }
@@ -39,7 +39,6 @@ AFRAME.registerComponent('rotate-by-controller-6dof', {
     onTriggerUp: function () {
         this.grabbing = false;
 
-        //fire grabEnd
         this.parentRig.emit("grabEnd", {ctrl: this.el});
       },
 
@@ -48,7 +47,6 @@ AFRAME.registerComponent('rotate-by-controller-6dof', {
 
         if (!hitEl || !this.grabbing) { return; }
 
-        //fire grabStart
         this.parentRig.emit("grabStart", {ctrl: this.el});
     }
 });
