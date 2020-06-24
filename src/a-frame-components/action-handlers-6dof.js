@@ -62,23 +62,6 @@ AFRAME.registerComponent("action-handlers-6dof", {
 
     tick: function() {
 
-        function fromQuaternionToAxis(q) {
-
-            var angle = Math.acos(q.w) * 2;
-            var s = Math.asin(angle / 2);
-
-            var x = q.x / s;
-            var y = q.y / s;
-            var z = q.z / s;
-
-            return {angle: angle, axis: new THREE.Vector3(x, y, z)};
-            // var halfAngle = angle / 2, s = Math.sin( halfAngle );
-
-            // this._x = axis.x * s;
-            // this._y = axis.y * s;
-            // this._z = axis.z * s;
-            // this._w = Math.cos( halfAngle );
-        }
         if ((this.el.isGrabbedBy.length === 0)) {
             //nothing to do, no object grabbed
             return;
