@@ -53,11 +53,13 @@ AFRAME.registerComponent('zoom-by-controller-3dof', {
             }
 
             var delta = self.prev - e.detail.axis[1];
+            
+            if (Math.abs(delta) <= 0.001) { 
+                return; 
+            }
 
-            //todo add some threshold to avoid scaling when touchpad was just touched
-            //if (Math.abs(delta) > 0.00075) {
             var scale = parentRig.scale.clone();
-
+            
             if (delta < 0) {
                 scale.add(new THREE.Vector3(-0.0001, -0.0001, -0.0001));
             } else if (delta > 0) {
