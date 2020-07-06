@@ -1,7 +1,9 @@
 import AFRAME from 'aframe/dist/aframe-v1.0.4';
-import './rotate-by-controller-3dof.js';
-import './zoom-by-controller-3dof.js';
-import './grab-6dof.js';
+import './3dof/rotate-by-controller-3dof.js';
+import './3dof/zoom-by-controller-3dof.js';
+import './6dof/grab-6dof.js';
+import './3dof/tool-menu.js'
+
 
 AFRAME.registerComponent('scene-config', {
 
@@ -27,8 +29,10 @@ AFRAME.registerComponent('scene-config', {
             this.controllerRight.setAttribute("zoom-by-controller-3dof", {target:"#parentRig", nearLimit: 0.5});
             this.controllerRight.setAttribute("laser-controls", {model:true, hand: "right"});
             this.controllerRight.setAttribute("raycaster", {showLine: true, far: 0.1, objects: ".raycastable"});
-            this.controllerLeft.setAttribute("laser-controls", {model:true, hand: "left"});
-            this.controllerLeft.setAttribute("raycaster", {far: 0});
+            this.controllerRight.setAttribute("tool-menu", {});
+            // no second controller
+            // this.controllerLeft.setAttribute("laser-controls", {model:true, hand: "left"});
+            // this.controllerLeft.setAttribute("raycaster", {far: 0});
         } else if (this.is6DoF) {
             this.parentRig.setAttribute("position", this.OBJECTSPOS_6DOF);
 

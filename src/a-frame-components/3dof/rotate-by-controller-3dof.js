@@ -9,8 +9,8 @@ AFRAME.registerComponent('rotate-by-controller-3dof', {
     },
 
     init: function () {
-        var self = this;
-        var el = this.el;
+        const self = this;
+        const el = this.el;
         
         //TODO count based on default front camera
         var defaultRotation = new THREE.Vector3(-90, 0, 0);
@@ -18,6 +18,9 @@ AFRAME.registerComponent('rotate-by-controller-3dof', {
         var parentRig = this.data.target.object3D;
         parentRig.rotation.set(defaultRotation.x, defaultRotation.y, defaultRotation.z);
 
+        this.onRotateStart = this.onRotateStart.bind(this);
+        this.onRotateEnd = this.onRotateEnd.bind(this);
+        //TODO move listeners to play, remove them on pause;
         el.addEventListener('triggerdown', function (e) {
             self.triggerPressed = true;
         });
@@ -36,8 +39,23 @@ AFRAME.registerComponent('rotate-by-controller-3dof', {
         });
     },
 
+    play: function() {
+        const el = this.el;
+        el.addEventListener("rotateStart", this.onRotateStart);
+        el.addEventListener("rotateEnd", this.onRotateEnd);
+    },
+    pause: function() {},
+
+    onRotateStart: function(e) {
+        this.rotating = true;
+    },
+
+    onRotateEnd: function(e) {
+        this.rotating = false;
+    },
+
     tick: function () {
-        if (!this.el.sceneEl.is('vr-mode'))
+        if (!this.el.sceneEl.is('vr-mode') || !this.rotating)
             return;
 
         var ray = this.el.getAttribute("line");
